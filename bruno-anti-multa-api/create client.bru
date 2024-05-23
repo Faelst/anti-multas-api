@@ -1,0 +1,19 @@
+meta {
+  name: create client
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/clients
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "Rafael Silverio",
+    "cpf": "46300000071",
+    "phone": 12981708474
+  }
+}

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    command: redis-server --requirepass guest@guest
+    ports:
+      - '6379:6379'
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: guest
+      POSTGRES_PASSWORD: guest@guest
+      POSTGRES_DB: anti_multas_db
+    ports:
+      - '5432:5432'
