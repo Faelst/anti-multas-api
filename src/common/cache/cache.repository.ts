@@ -7,7 +7,8 @@ export class CacheRepository {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   async saveData<T>(data: T, key: string): Promise<void> {
-    await this.cacheManager.set(key, JSON.stringify(data));
+    const ttl = 60 * 60 * 42;
+    await this.cacheManager.set(key, JSON.stringify(data), ttl);
   }
 
   async getData<T>(key: string): Promise<T> {
