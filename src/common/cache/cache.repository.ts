@@ -11,6 +11,12 @@ export class CacheRepository {
   }
 
   async getData<T>(key: string): Promise<T> {
-    return JSON.parse(await this.cacheManager.get(key)) as T;
+    const data = (await this.cacheManager.get(key)) as string | null;
+
+    if (!data || data === 'undefined') {
+      return null;
+    }
+
+    return JSON.parse(data) as T;
   }
 }
