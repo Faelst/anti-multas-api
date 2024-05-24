@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { FindTrafficInflationsDto } from './dto/find-traffic-inflations.dto';
-import { RedisCacheRepository } from '../../common/redis-cache/redis-cache.repository';
+import { CacheRepository } from '../../common/cache/cache.repository';
 import { FindTrafficInflationUseCase } from './use-cases/find-traffic-inflation.usecase';
 
 @Injectable()
 export class TrafficInflationsService {
   constructor(
-    private readonly redisCacheRepository: RedisCacheRepository,
+    private readonly cacheRepository: CacheRepository ,
     private readonly findTrafficInflationUseCase: FindTrafficInflationUseCase,
   ) {}
 
@@ -14,7 +14,7 @@ export class TrafficInflationsService {
     chassi,
     vehiclePlate,
   }: FindTrafficInflationsDto) {
-    const trafficInflation = await this.redisCacheRepository.getData(
+    const trafficInflation = await this.cacheRepository.getData(
       `traffic-inflation:${chassi}:${vehiclePlate}`,
     );
 
@@ -28,7 +28,7 @@ export class TrafficInflationsService {
         vehiclePlate,
       });
 
-    await this.redisCacheRepository.saveData(
+    await this.cacheRepository.saveData(
       trafficInflationsRepository,
       `traffic-inflation:${chassi}:${vehiclePlate}`,
     );
