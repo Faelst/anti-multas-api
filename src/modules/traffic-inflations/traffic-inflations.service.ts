@@ -6,7 +6,7 @@ import { FindTrafficInflationUseCase } from './use-cases/find-traffic-inflation.
 @Injectable()
 export class TrafficInflationsService {
   constructor(
-    private readonly cacheRepository: CacheRepository ,
+    private readonly cacheRepository: CacheRepository,
     private readonly findTrafficInflationUseCase: FindTrafficInflationUseCase,
   ) {}
 

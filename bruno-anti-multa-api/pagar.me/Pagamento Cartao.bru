@@ -1,0 +1,71 @@
+meta {
+  name: Pagamento Cartao
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://api.pagar.me/core/v5/orders
+  body: json
+  auth: basic
+}
+
+headers {
+  accept: application/json
+  Content-Type: application/json
+}
+
+auth:basic {
+  username: sk_308bb4bfff314403b898d84979cb08a3
+  password: 
+}
+
+body:json {
+  {
+    "customer": {
+      "name": "Rafael Silverio",
+      "email": "faelSilverio@ligadajustica.com.br"
+    },
+    "items": [
+      {
+        "amount": 2990,
+        "description": "Chaveiro do Tesseract",
+        "quantity": 1
+      }
+    ],
+    "antifraud": {
+      "type": "clearsale",
+      "clearsale": {
+        "custom_sla": "90"
+      }
+    },
+    "session_id": "322b821a",
+    "device": {
+      "platform": "ANDROID OS"
+    },
+    "payments": [
+      {
+        "payment_method": "credit_card",
+        "credit_card": {
+          "recurrence": false,
+          "installments": 1,
+          "statement_descriptor": "AVENGERS",
+          "card": {
+            "number": "4000000000000010",
+            "holder_name": "Rafael Silverio",
+            "exp_month": 1,
+            "exp_year": 30,
+            "cvv": "3531",
+            "billing_address": {
+              "line_1": "10880, Malibu Point, Malibu Central",
+              "zip_code": "90265",
+              "city": "Malibu",
+              "state": "CA",
+              "country": "US"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

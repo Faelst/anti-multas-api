@@ -1,19 +1,19 @@
 meta {
   name: create client
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
-  url: {{base_url}}/clients
+  url: {{base_url}}/customer
   body: json
   auth: none
 }
 
 body:json {
   {
-    "nome": "Rafael Silverio",
+    "name": "Rafael Silverio",
     "cpf": "46300000071",
-    "phone": 12981708474
+    "phone": "12981708474"
   }
 }

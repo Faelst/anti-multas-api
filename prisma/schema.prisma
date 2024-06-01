@@ -7,11 +7,92 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Client {
-  id        String   @id @default(cuid())
-  name      String
-  phone     String   @unique
-  cpf       String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Customer {
+  id                      String                    @id @default(cuid())
+  name                    String
+  phone                   String
+  email                   String?
+  cpf                     String                    @unique
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  Address                 Address[]
+  Transaction             Transaction[]
+  solicitationTransaction SolicitationTransaction[]
+  Solicitation            Solicitation[]
+}
+
+model Address {
+  id           String   @id @default(cuid())
+  street       String
+  number       String
+  city         String
+  state        String
+  zip_code     String
+  neighborhood String
+  complement   String
+  customer     Customer @relation(fields: [customerId], references: [id])
+  customerId   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Solicitation {
+  id                      String                    @id @default(cuid())
+  code                    Int                       @unique @default(autoincrement())
+  status                  String
+  customer                Customer                  @relation(fields: [customerId], references: [id])
+  customerId              String
+  amount_payment          Float
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  solicitationTransaction SolicitationTransaction[]
+  Inflations              Inflations[]
+}
+
+model Inflations {
+  id               String       @id @default(cuid())
+  description      String
+  simple_amount    Float
+  especial_amount  Float
+  inflation_amount Float
+  payment_amount   Float
+  type_selected    String
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  solicitation     Solicitation @relation(fields: [solicitationId], references: [id])
+  solicitationId   String
+}
+
+model Transaction {
+  id                      String                    @id @default(cuid())
+  externalId              String
+  amount                  Float
+  status                  String
+  success                 Boolean
+  acquirer_message        String
+  acquirer_return_code    String
+  operation_type          String
+  card_first_six_digits   String
+  card_last_four_digits   String
+  card_brand              String
+  card_holder_name        String
+  transaction_type        String
+  closed                  Boolean
+  customer                Customer                  @relation(fields: [customerId], references: [id])
+  customerId              String
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  solicitationTransaction SolicitationTransaction[]
+}
+
+model SolicitationTransaction {
+  id             String       @id @default(cuid())
+  customer       Customer     @relation(fields: [customerId], references: [id])
+  customerId     String
+  transaction    Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId  String?
+  solicitation   Solicitation @relation(fields: [solicitationId], references: [id])
+  solicitationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }

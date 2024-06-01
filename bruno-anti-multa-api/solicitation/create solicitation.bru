@@ -1,0 +1,31 @@
+meta {
+  name: create solicitation
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/solicitation
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "customerId": "clwv56mjp0000fjwwi7xipn4o",
+    "simpleAmount": 100.0,
+    "especialAmount": 50.0,
+    "inflationAmount": 5.0,
+    "paymentAmount": 130.16,
+    "type": "multa",
+    "description": "TRANSITAR EM VELOCIDADE SUPERIOR A MAXIMA PERMITIDA EM ATE 20",
+    "vehiclePlate": "HCE7383",
+    "chassis": "3N1BC1AS2CL356451",
+    "date": "2025-08-21T00:00:00.000Z",
+    "hour": "14:47",
+    "dateInclude": "2023-11-06T00:00:00.000Z",
+    "defenseDate": "2021-12-06T00:00:00.000Z",
+    "situation": "A PAGAR",
+    "code": "745-50"
+  }
+}

@@ -4,10 +4,10 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../common/prisma/prisma.service';
 
 @Injectable()
-export class ClientsService {
+export class CustomerService {
   constructor(private prisma: PrismaService) {}
 
-  create(client: Prisma.ClientCreateInput) {
-    return this.prisma.client.create({ data: client });
+  create(client: Prisma.CustomerCreateInput) {
+    return this.prisma.customer.create({ data: client });
   }
 }
