@@ -5,7 +5,20 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: {{base_url}}/customer/add-address
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "street": "Rua das Flores",
+    "number": "123",
+    "neighborhood": "Jardim das Rosas",
+    "city": "São Paulo",
+    "state": "SP",
+    "zipCode": "01001-000",
+    "complement": "Apto 101",
+    "customerId": "clwv56mjp0000fjwwi7xipn4o"
+  }
 }

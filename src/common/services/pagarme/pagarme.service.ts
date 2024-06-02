@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import axios from 'axios';
 import { randomUUID } from 'crypto';
 import { CreateOrderDto } from '../../../modules/payment/dto/create-order.dto';
@@ -20,18 +19,64 @@ export class PagarmeService {
   ) {}
 
   async createOrder(solitication: any, payment: CreateOrderDto) {
+    // const payload = JSON.stringify({
+    //   items: solitication.Inflations?.map((inflation) => ({
+    //     id: randomUUID(),
+    //     title: inflation.description,
+    //     unit_price: inflation.paymentAmount,
+    //     quantity: 1,
+    //     tangible: false,
+    //   })),
+    //   customer: {
+    //     name: solitication.customer.name,
+    //     email: solitication.customer.email,
+    //     document: solitication.customer.cpf,
+    //     type: 'individual',
+    //     phones: {
+    //       home_phone: {
+    //         country_code: '55',
+    //         area_code: '21',
+    //         number: '000000000',
+    //       },
+    //       mobile_phone: {
+    //         country_code: '55',
+    //         area_code: solitication.customer.phone?.slice(0, 2),
+    //         number: solitication.customer.phone?.slice(2),
+    //       },
+    //     },
+    //   },
+    //   payments: [
+    //     {
+    //       payment_method: 'credit_card',
+    //       credit_card: {
+    //         recurrence: false,
+    //         installments: payment.creditCard.installments,
+    //         statement_descriptor: 'AntiMultas',
+    //         card: {
+    //           number: payment.creditCard.number,
+    //           holder_name: payment.creditCard.holderName,
+    //           exp_month: payment.creditCard.expMonth,
+    //           exp_year: payment.creditCard.expYear,
+    //           cvv: payment.creditCard.cvv,
+    //           billing_address: {
+    //             line_1: solitication.customer.Address.street,
+    //             zip_code: solitication.customer.Address.zip_code,
+    //             city: solitication.customer.Address.city,
+    //             state: solitication.customer.Address.state,
+    //             country: 'br',
+    //           },
+    //         },
+    //       },
+    //     },
+    //   ],
+    // });
+
     const payload = JSON.stringify({
-      items: solitication.Inflations?.map((inflation) => ({
-        id: randomUUID(),
-        title: inflation.description,
-        unit_price: inflation.paymentAmount,
-        quantity: 1,
-        tangible: false,
-      })),
       customer: {
         name: solitication.customer.name,
         email: solitication.customer.email,
         document: solitication.customer.cpf,
+        document_type: 'CPF',
         type: 'individual',
         phones: {
           home_phone: {
@@ -46,6 +91,12 @@ export class PagarmeService {
           },
         },
       },
+      items: solitication.Inflations?.map((inflation) => ({
+        code: randomUUID(),
+        amount: inflation.payment_amount,
+        description: inflation.description,
+        quantity: 1,
+      })),
       payments: [
         {
           payment_method: 'credit_card',
@@ -60,10 +111,10 @@ export class PagarmeService {
               exp_year: payment.creditCard.expYear,
               cvv: payment.creditCard.cvv,
               billing_address: {
-                line_1: solitication.customer.Address.street,
-                zip_code: solitication.customer.Address.zip_code,
-                city: solitication.customer.Address.city,
-                state: solitication.customer.Address.state,
+                line_1: solitication.customer.Address[0].street,
+                zip_code: solitication.customer.Address[0].zip_code,
+                city: solitication.customer.Address[0].city,
+                state: solitication.customer.Address[0].state,
                 country: 'br',
               },
             },
@@ -72,8 +123,12 @@ export class PagarmeService {
       ],
     });
 
-    const { data } = await this.pagarmeInstance.post('/orders', payload);
+    try {
+      const { data } = await this.pagarmeInstance.post('/orders', payload);
 
-    return data;
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

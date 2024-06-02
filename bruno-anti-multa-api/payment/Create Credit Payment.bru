@@ -6,6 +6,20 @@ meta {
 
 post {
   url: {{base_url}}/payment
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "creditCard": {
+      "installments": 3,
+      "number": "4111111111111111",
+      "holderName": "John Doe",
+      "expMonth": 12,
+      "expYear": 2025,
+      "cvv": 123
+    },
+    "solicitationId": "sol123456"
+  }
 }
