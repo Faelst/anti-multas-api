@@ -9,7 +9,7 @@ export class SolicitationController {
   ) {}
 
   @Post('')
-  executePayment(@Body() inflations: CreateSolicitationDto) {
-    return this.createSolicitationUseCase.execute(inflations);
+  executePayment(@Body() infractions: CreateSolicitationDto) {
+    return this.createSolicitationUseCase.execute(infractions);
   }
 }

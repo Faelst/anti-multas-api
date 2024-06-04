@@ -48,5 +48,5 @@ export class CreateSolicitationDto {
   @IsString()
   customerId: string;
 
-  inflations: inflations[];
+  infractions: inflations[];
 }

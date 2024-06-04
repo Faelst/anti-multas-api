@@ -7,7 +7,7 @@ import { CreateSolicitationDto } from '../dto/create-solicitation.dto';
 export class CreateSolicitationUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute({ customerId, inflations }: CreateSolicitationDto) {
+  async execute({ customerId, infractions }: CreateSolicitationDto) {
     const customer = await this.prisma.customer.findUnique({
       where: { id: customerId },
       include: {
@@ -19,7 +19,7 @@ export class CreateSolicitationUseCase {
       throw new Error('Customer not found');
     }
 
-    const paymentAmount = inflations.reduce(
+    const paymentAmount = infractions.reduce(
       (acc, inflation) => acc + inflation.paymentAmount,
       0,
     );
@@ -32,13 +32,13 @@ export class CreateSolicitationUseCase {
       },
     });
 
-    const inflationsData = inflations.map((inflation) => ({
-      especial_amount: inflation.especialAmount * 100,
-      simple_amount: inflation.simpleAmount * 100,
-      inflation_amount: inflation.inflationAmount * 100,
-      payment_amount: inflation.paymentAmount * 100,
-      type_selected: inflation.type,
-      description: inflation.description,
+    const inflationsData = infractions.map((infraction) => ({
+      especial_amount: infraction.especialAmount * 100,
+      simple_amount: infraction.simpleAmount * 100,
+      inflation_amount: infraction.inflationAmount * 100,
+      payment_amount: infraction.paymentAmount * 100,
+      type_selected: infraction.type,
+      description: infraction.description,
       solicitationId: solicitation.id,
     }));
 
