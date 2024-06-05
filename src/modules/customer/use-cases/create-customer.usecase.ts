@@ -20,8 +20,8 @@ export class CreateCustomerUseCase {
     return this.prisma.customer.create({
       data: {
         ...customer,
-        cpf: customer.cpf.replace(/\D/g, ''),
-        phone: customer.phone.replace(/\D/g, ''),
+        cpf: customer.cpf,
+        phone: customer.phone,
       },
     });
   }
