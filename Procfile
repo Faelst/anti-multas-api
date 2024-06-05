@@ -1,1 +1,1 @@
-web: yarn migration:generate && yarn migration:run
+web: yarn build && yarn start:prod
