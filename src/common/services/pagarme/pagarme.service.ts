@@ -22,7 +22,7 @@ export class PagarmeService {
     const payload = {
       customer: {
         name: solitication.customer.name,
-        email: solitication.customer.email,
+        email: 'antimultas@gmail.com',
         document: solitication.customer.cpf,
         document_type: 'CPF',
         type: 'individual',
@@ -70,13 +70,12 @@ export class PagarmeService {
         },
       ],
     };
-    console.log(payload.customer);
+
     try {
       const { data } = await this.pagarmeInstance.post('/orders', payload);
 
       return data;
     } catch (error) {
-      console.log(error.response.data);
       throw new Error('Pagamento não autorizado, tenta novamente!');
     }
   }

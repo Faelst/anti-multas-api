@@ -31,7 +31,6 @@ export class CreateCreditCardPaymentUseCase {
 
       return this.pagarmeService.createOrder(solicitation, payment);
     } catch (error) {
-      console.error(error);
       return error;
     }
   }
