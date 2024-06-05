@@ -17,7 +17,13 @@ export class CreateCustomerUseCase {
       return existingCustomer;
     }
 
-    return this.prisma.customer.create({ data: customer });
+    return this.prisma.customer.create({
+      data: {
+        ...customer,
+        cpf: customer.cpf.replace(/\D/g, ''),
+        phone: customer.phone.replace(/\D/g, ''),
+      },
+    });
   }
 
   async addAddress(address: AddAddressDto) {

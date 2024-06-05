@@ -19,7 +19,7 @@ export class PagarmeService {
   ) {}
 
   async createOrder(solitication: any, payment: CreateOrderDto) {
-    const payload = JSON.stringify({
+    const payload = {
       customer: {
         name: solitication.customer.name,
         email: solitication.customer.email,
@@ -69,14 +69,15 @@ export class PagarmeService {
           },
         },
       ],
-    });
-
+    };
+    console.log(payload.customer);
     try {
       const { data } = await this.pagarmeInstance.post('/orders', payload);
 
       return data;
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      throw new Error('Pagamento não autorizado, tenta novamente!');
     }
   }
 }
