@@ -38,6 +38,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.14.0",
+    "@types/multer": "^1.4.11",
     "axios": "^1.7.2",
     "cache-manager": "^5.5.3",
     "class-transformer": "^0.5.1",

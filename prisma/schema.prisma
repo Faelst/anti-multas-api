@@ -47,6 +47,7 @@ model Solicitation {
   updatedAt               DateTime                  @updatedAt
   solicitationTransaction SolicitationTransaction[]
   Inflations              Inflations[]
+  SolicitationDocument    SolicitationDocument[]
 }
 
 model Inflations {
@@ -93,6 +94,20 @@ model SolicitationTransaction {
   transactionId  String?
   solicitation   Solicitation @relation(fields: [solicitationId], references: [id])
   solicitationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model SolicitationDocument {
+  id             String       @id @default(cuid())
+  solicitation   Solicitation @relation(fields: [solicitationId], references: [id])
+  solicitationId String
+  fileName       String
+  originalName   String
+  encoding       String
+  mimetype       String
+  size           Int
+  buffer         Bytes
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }
