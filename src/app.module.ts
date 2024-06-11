@@ -5,9 +5,11 @@ import { TrafficInflationsModule } from './modules/traffic-inflations/traffic-in
 import { CustomerModule } from './modules/customer/customer.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { SolicitationModule } from './modules/solicitation/solicitation.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     ConfigModule.forRoot(),
     TrafficInflationsModule,
     CustomerModule,
