@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
@@ -16,4 +17,8 @@ export class CreateUserDto {
   @IsString({ message: 'Senha deve ser uma string' })
   @IsNotEmpty({ message: 'Senha não pode ser vazio' })
   password: string;
+
+  @IsString({ message: 'CPF do cliente deve ser uma string' })
+  @Transform(({ value }) => value.replace(/\D/g, ''))
+  cpf: string;
 }

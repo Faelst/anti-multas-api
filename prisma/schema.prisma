@@ -13,6 +13,12 @@ model Customer {
   phone                   String
   email                   String?
   cpf                     String                    @unique
+  rg                      String?
+  expeditor_rg            String?
+  occupation              String?
+  cnh_number              String?
+  cnh_uf                  String?
+  civil_state             String?
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @updatedAt
   Address                 Address[]
@@ -23,16 +29,16 @@ model Customer {
 }
 
 model User {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   first_name String
   last_name  String
-  email      String   @unique
-  cpf        String   @unique
+  email      String    @unique
+  cpf        String    @unique
   password   String
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Address {
@@ -57,6 +63,7 @@ model Solicitation {
   customer                Customer                  @relation(fields: [customerId], references: [id])
   customerId              String
   amount_payment          Float
+  vehicle_owner           String?
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @updatedAt
   solicitationTransaction SolicitationTransaction[]

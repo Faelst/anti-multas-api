@@ -1,0 +1,23 @@
+meta {
+  name: update customer
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/customer/clxaluw2u0001117nks07c8en
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "rg": "38.711.006-2",
+    "email": "jhon.due@",
+    "expeditorRg": "SSP",
+    "occupation": "Engenheiro de Sotware",
+    "cnhNumber": "03910371848",
+    "cnhUf": "SSP",
+    "civilState": "Casado"
+  }
+}

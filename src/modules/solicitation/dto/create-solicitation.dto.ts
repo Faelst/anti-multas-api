@@ -1,6 +1,6 @@
-import { IsDateString, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class inflations {
+export class InflationsDto {
   @IsNumber()
   simpleAmount: number;
 
@@ -42,11 +42,14 @@ export class inflations {
 
   @IsString()
   code: string;
+
+  @IsOptional()
+  vehicleOwner?: string;
 }
 
 export class CreateSolicitationDto {
   @IsString()
   customerId: string;
 
-  infractions: inflations[];
+  infractions: InflationsDto[];
 }

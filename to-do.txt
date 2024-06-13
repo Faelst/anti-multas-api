@@ -1,0 +1,118 @@
+To-do:
+- Pagina de acompanhamento de solicitação
+
+
+To-do 2.0:
+- Implementação login back [FEITO]
+
+- Apos o pagamento atualizar o status da solicitação para "Pago", "Aguardando Pagamento", "Cancelado" ou "Negado" [feito]
+
+- Envio de documentos para o back [feito]
+
+- adicionar no formulario de cadastro [FEITO]
+  - numero da cnh [FEITO]
+  - nome do propietario do veiculo [FEITO]
+  - estadoCivil [FEITO]
+  - orgao Expedidor do rg [FEITO]
+  - uf CNH [FEITO]
+
+- Criar webhook para receber notificações de pagamento
+
+- Apos efetuar o pagamento e retornar como pago, disparar api da D4Sing para enviar o documento para assinatura
+ - https://docapi.d4sign.com.br/reference/enviar-documento-para-assinatura
+
+- Criar webhook para receber evento de assinatura
+ -https://docapi.d4sign.com.br/reference/cadastrar-webhook-em-um-documento-1
+
+- Criar interface para apos receber o evento de assinatura, atualizar o envio do JSON para api juridico
+  {
+    "id": 123457, //Número único de referência para consultrar no sistema Antimultas
+    "tipoAcaoJudicial": "Infração de Trânsito", //Opções válidas Infração Trânsito ou Trânsito Administrativo
+    "natureza": "RECURSO SIMPLES", //Vamos ver com os usuários as opções possíveis 
+    "situacao": "Ativo",
+    "classificacao": "Comum",
+    "processoVirtual": true,
+    //Este só é necessário se o tipoAcaoJudicial for Infração de Trânsito
+    "infracaoTransito": {
+        "listaCodDETRAN": [
+            "3470"
+        ], //Código da infração, lembrando que precisa ser exato 745-50 é diferente de 74550
+        "uf": "MG",
+        "cidade": "Belo Horizonte",
+        "numeroAIT": "AL0055331", //Só letras e números
+        "numeroProcessamento": "0123999661", //Só números
+        "nomeProprietarioVeiculo": "José Silva",
+        "local": "Betim",
+        "valor": 1566.66,
+        "data": "10/04/2024",
+        "hora": "10:30",
+        "condutorIdentificado": true,
+        "fici": true,
+        "numeroPortariaPunitiva": "1015", //Não é obrigatório
+        "relatorio": "Texto livre com acentuação", //Não é obrigatório
+        "veiculo": {
+            "uf": "MG", //UF da placa do veículo
+            "codTipoVeiculo": 51, //Opções 51 - Carros e Utilitários, 52 - Motos, 53 - Caminhões e Micro Ônibus
+            "marca": "Hyundai",
+            "modelo": "HB20 S For You 1.0 Flex 12V 4p",
+            "ano": "2015",
+            "placa": "ABC-1234", //Aceita o formato antigo e o novo
+            "cor": "PRETA",
+            "chassi": "KWCHA1234568",
+            "renavam": "00459778985"
+        },
+        //Não obrigatório, opções válidas: Clínico, Etilômetro, Sangue, Urina
+        "tiposExame": [
+            "Clínico",
+            "Etilometro"
+        ],
+        //Não obrigatório, opções válidas: Declaração para trabalho, Inclusão de Categoria, Renovação CNH, Troca de Categoria
+        "tiposEfeitoSuspensivo": [
+            "Inclusão de Categoria",
+            "Renovação CNH"
+        ]
+    },
+    "autor": [
+        {
+            "nome": "LUÍZ GUSTAVO BIS DOS SANTOS",
+            "CNPJCPF": "02054015628", //Só números - obrigatório
+            "tipoPessoa": "PF", //PF ou PJ
+            "estadoCivil": "CA", //Opções válidas CA(Casado), SO(Solteiro), VI(Viúvo), DI(Divorciado), UE(União Estável), SE(Separado), DE(Desquitado), OU(Outros)
+            "carteiraIdentidade": "55.245-785", //Números, traços e pontos
+            "orgaoExpedidor": "SSP",
+            "numeroCNH": "12345678", //Só números
+            "ufCNH": "MG",
+            "ddd": "31",
+            "telefone": "992474120", //Só números
+            "email": "teste@ajus.com.br",
+            "endereco": {
+                "logradouro": "Rua A",
+                "numero": "10",
+                "complemento": "CASA",
+                "bairro": "Centro",
+                "cep": "31155330", //Só números
+                "cidade": "Belo Horizonte",
+                "uf": "MG"
+            },
+            "arquivos": [
+                {
+                    "nomeArquivo": "Teste.pdf",
+                    "base64": ""
+                }
+            ]
+        }
+    ],
+    "reu": [
+        {
+            "nome": "EMPRESA MUNICIPAL DE TRANSPORTE E TRÂNSITO - TRANSBETIM",
+            "CNPJCPF": "62232889000191", //Só números - obrigatório
+            "tipoPessoa": "PJ" //PF ou PJ
+        }
+    ],
+    "arquivos": [
+        {
+            "nomeArquivo": "Teste.pdf",
+            "base64": ""
+        }
+    ]
+}

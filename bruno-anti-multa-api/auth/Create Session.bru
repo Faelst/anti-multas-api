@@ -1,0 +1,18 @@
+meta {
+  name: Create Session
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/auth/session
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "fael_123@hotmail.com",
+    "password": "qwert12345"
+  }
+}

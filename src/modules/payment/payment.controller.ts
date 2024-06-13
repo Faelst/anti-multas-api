@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Put } from '@nestjs/common';
 
 import { CreateCreditCardPaymentUseCase } from './use-cases/create-credit-card-payment.usecase';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -12,5 +12,17 @@ export class PaymentController {
   @Post('')
   executePayment(@Body() payment: CreateOrderDto) {
     return this.createCreditCardPaymentUseCase.execute(payment);
+  }
+
+  @Post('webhook')
+  webhook(@Body() body: any) {
+    console.log('Webhook received', body);
+    return { message: 'Webhook received' };
+  }
+
+  @Put('webhook')
+  webhookPut(@Body() body: any) {
+    console.log('Webhook received', body);
+    return { message: 'Webhook received' };
   }
 }

@@ -1,0 +1,21 @@
+meta {
+  name: Create user
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "firstName": "Jhon",
+    "lastName": "Due",
+    "cpf": "46300294971",
+    "email": "fael_123@hotmail.com",
+    "password": "qwert12345"
+  }
+}
