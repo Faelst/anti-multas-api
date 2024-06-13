@@ -70,12 +70,13 @@ export class PagarmeService {
         },
       ],
     };
-
+    console.log(JSON.stringify(payload, null, 2));
     try {
       const { data } = await this.pagarmeInstance.post('/orders', payload);
 
       return data;
     } catch (error) {
+      console.log(error.response.data);
       throw new Error('Pagamento não autorizado, tenta novamente!');
     }
   }
