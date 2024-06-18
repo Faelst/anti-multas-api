@@ -16,10 +16,41 @@ To-do 2.0:
   - orgao Expedidor do rg [FEITO]
   - uf CNH [FEITO]
 
-- Criar webhook para receber notificações de pagamento
+- Criar webhook para receber notificações de pagamento 
 
 - Apos efetuar o pagamento e retornar como pago, disparar api da D4Sing para enviar o documento para assinatura
  - https://docapi.d4sign.com.br/reference/enviar-documento-para-assinatura
+ 
+ 1* - Ele cria o documento /makedocumentbytemplateword, com as variaveis do documento
+ Body: {
+  "templates": {
+	    "MTgwMg==": {
+	    	"costumer_name": "Rafael Silverio Integração",
+	    	"costumer_rg": "38.705.006-SP",
+        "costumer_expeditor_rg": "SSP",
+        "current_data": "27/02/1998"
+	    }
+   }
+}
+
+2* - Cria a lista de seguinatarios com o UUID que ira retornar da criação do documento /{uuid-documento}/createlist
+Body: {
+  "signers": [
+    {
+      "email": "fael_st@hotmail.com",
+      "act": 1,
+      "foreign": 0,
+      "certificadoicpbr": 0,
+      "assinatura_presencial": 0
+    }
+  ]
+}
+
+3* - Com o mesmo UUID do documento, envia o documento para assinatura /{uuid-documento}/sendtosigner
+body: {
+    "skip_email": "1",
+    "workflow": "0"
+}
 
 - Criar webhook para receber evento de assinatura
  -https://docapi.d4sign.com.br/reference/cadastrar-webhook-em-um-documento-1

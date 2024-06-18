@@ -1,0 +1,22 @@
+meta {
+  name: Criar pasta no cofre
+  type: http
+  seq: 7
+}
+
+post {
+  url: https://sandbox.d4sign.com.br/api/v1/folders/9732b38f-de03-40d3-9845-ae4929f9cc8a/create?tokenAPI=live_7a8e728da49122d4cc7ffe9de67c6da5cf5084e0eefd8f5651d345d8673fa18a&cryptKey=live_crypt_UO1nkNbWWosDv2smPNWE73rttgp3CwQX
+  body: json
+  auth: none
+}
+
+query {
+  tokenAPI: live_7a8e728da49122d4cc7ffe9de67c6da5cf5084e0eefd8f5651d345d8673fa18a
+  cryptKey: live_crypt_UO1nkNbWWosDv2smPNWE73rttgp3CwQX
+}
+
+body:json {
+  {
+    "folder_name": "api-test"
+  }
+}

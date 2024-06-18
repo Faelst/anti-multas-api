@@ -7,16 +7,23 @@ import { PaymentModule } from './modules/payment/payment.module';
 import { SolicitationModule } from './modules/solicitation/solicitation.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { DocumentModule } from './modules/document/document.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    EventEmitterModule.forRoot(),
     TrafficInflationsModule,
     CustomerModule,
     PaymentModule,
     SolicitationModule,
     AuthModule,
     UserModule,
+    DocumentModule,
   ],
   controllers: [],
   providers: [],

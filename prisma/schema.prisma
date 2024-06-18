@@ -64,6 +64,7 @@ model Solicitation {
   customerId              String
   amount_payment          Float
   vehicle_owner           String?
+  signer_document_id      String?
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @updatedAt
   solicitationTransaction SolicitationTransaction[]

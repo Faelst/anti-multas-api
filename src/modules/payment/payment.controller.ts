@@ -23,6 +23,6 @@ export class PaymentController {
   @Put('webhook')
   webhookPut(@Body() body: any) {
     console.log('Webhook received', body);
-    return { message: 'Webhook received' };
+    return { message: 'Webhook received', body };
   }
 }

@@ -1,0 +1,30 @@
+meta {
+  name: Send Document to Sign
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://sandbox.d4sign.com.br/api/v1/documents/3ea0241c-fd50-4201-8c85-5aef6a208dfd/sendtosigner?tokenAPI=live_7a8e728da49122d4cc7ffe9de67c6da5cf5084e0eefd8f5651d345d8673fa18a&cryptKey=live_crypt_UO1nkNbWWosDv2smPNWE73rttgp3CwQX
+  body: json
+  auth: none
+}
+
+query {
+  tokenAPI: live_7a8e728da49122d4cc7ffe9de67c6da5cf5084e0eefd8f5651d345d8673fa18a
+  cryptKey: live_crypt_UO1nkNbWWosDv2smPNWE73rttgp3CwQX
+}
+
+body:json {
+  {
+    "signers": [
+      {
+        "email": "fael_st@hotmail.com",
+        "act": 1,
+        "foreign": 0,
+        "certificadoicpbr": 0,
+        "assinatura_presencial": 0
+      }
+    ]
+  }
+}
