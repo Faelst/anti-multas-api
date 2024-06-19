@@ -1,19 +1,18 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { WebhookDto } from './dto/webhook.dto';
+import { UpdateDocumentStatusUseCase } from './use-cases/update-document-status.usecase';
 
 @Controller('document')
 export class DocumentController {
-  constructor() {}
+  constructor(
+    private readonly updateDocumentStatusUseCase: UpdateDocumentStatusUseCase,
+  ) {}
 
   @Post('webhook')
   webhook(
     @Body()
-    body: {
-      uuid: string;
-      type_post: string;
-      message: string;
-    },
+    body: WebhookDto,
   ) {
-    console.log('Webhook received', body);
-    return { message: 'Webhook received', body };
+    return this.updateDocumentStatusUseCase.execute(body);
   }
 }

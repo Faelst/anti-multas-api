@@ -1,16 +1,22 @@
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { OnEvent } from '@nestjs/event-emitter';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { D4SignService } from '../../common/services/d4sign/d4sing.service';
 import { Customer, Solicitation } from '@prisma/client';
+import { SendDocumentToLegalUseCase } from './use-cases/send-legal-document.usecase';
 
 @Injectable()
 export class DocumentEventReceiverService {
   constructor(
-    private readonly eventEmitter: EventEmitter2,
     private readonly prisma: PrismaService,
     private readonly d4SignService: D4SignService,
+    private readonly sendDocumentToLegalUseCase: SendDocumentToLegalUseCase,
   ) {}
+
+  @OnEvent('document.signed')
+  async handleDocumentSigned(solicitationId: string) {
+    this.sendDocumentToLegalUseCase.execute(solicitationId);
+  }
 
   @OnEvent('document.send-email-to-signer')
   async handleSendEmailToSigner({
@@ -27,7 +33,7 @@ export class DocumentEventReceiverService {
       });
 
       await this.d4SignService.createSigner({
-        email: 'fael_st@hotmail.com',
+        email: solicitation.customer.email,
         documentId: documentId,
       });
 
