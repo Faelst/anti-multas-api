@@ -1,81 +1,81 @@
 import axios from 'axios';
-import { randomUUID } from 'crypto';
 import { CreateOrderDto } from '../../../modules/payment/dto/create-order.dto';
+import { Address, Customer, Solicitation } from '@prisma/client';
 
-export class PagarmeService {
+export class AsaasService {
   constructor(
-    private readonly pagarmeInstance = axios.create({
-      baseURL: process.env.PAGARME_URL,
+    private readonly instance = axios.create({
+      baseURL: process.env.AACT_API_URL,
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-      },
-      auth: {
-        username: process.env.PAGARME_API_KEY,
-        password: '',
+        'User-Agent': 'anti-multas-api',
+        access_token: process.env.ASAAS_API_TOKEN,
       },
       timeout: 60000,
     }),
   ) {}
 
-  async createOrder(solitication: any, payment: CreateOrderDto) {
+  async createCustomer(customer: Customer) {
     const payload = {
-      customer: {
-        name: solitication.customer.name,
-        email: 'antimultas@gmail.com',
-        document: solitication.customer.cpf,
-        document_type: 'CPF',
-        type: 'individual',
-        phones: {
-          home_phone: {
-            country_code: '55',
-            area_code: '21',
-            number: '000000000',
-          },
-          mobile_phone: {
-            country_code: '55',
-            area_code: solitication.customer.phone?.slice(0, 2),
-            number: solitication.customer.phone?.slice(2),
-          },
-        },
-      },
-      items: solitication.Inflations?.map((inflation) => ({
-        code: randomUUID(),
-        amount: inflation.payment_amount,
-        description: inflation.description,
-        quantity: 1,
-      })),
-      payments: [
-        {
-          payment_method: 'credit_card',
-          credit_card: {
-            recurrence: false,
-            installments: payment.creditCard.installments,
-            statement_descriptor: 'AntiMultas',
-            card: {
-              number: payment.creditCard.number,
-              holder_name: payment.creditCard.holderName,
-              exp_month: payment.creditCard.expMonth,
-              exp_year: payment.creditCard.expYear,
-              cvv: payment.creditCard.cvv,
-              billing_address: {
-                line_1: solitication.customer.Address[0].street,
-                zip_code: solitication.customer.Address[0].zip_code,
-                city: solitication.customer.Address[0].city,
-                state: solitication.customer.Address[0].state,
-                country: 'br',
-              },
-            },
-          },
-        },
-      ],
+      name: customer.name,
+      cpfCnpj: customer.cpf,
     };
 
     try {
-      const { data, status } = await this.pagarmeInstance.post(
-        '/orders',
-        payload,
-      );
+      const { data, status } = await this.instance.post('/customers', payload);
+
+      return { data, status };
+    } catch (error) {
+      console.log(error.response.data);
+      throw new Error('Cliente não cadastrado');
+    }
+  }
+
+  async listCustomers(cpf: string) {
+    try {
+      const { data, status } = await this.instance.get('/customers', {
+        params: {
+          cpfCnpj: cpf,
+        },
+      });
+
+      return { data, status };
+    } catch (error) {
+      console.log(error.response.data);
+      throw new Error('Cliente não encontrado');
+    }
+  }
+
+  async createOrder(
+    customerAsaasId: string,
+    payment: CreateOrderDto,
+    solicitation: Solicitation & { customer: Customer & { Address: Address } },
+  ) {
+    const payload = {
+      customer: customerAsaasId,
+      billingType: 'CREDIT_CARD',
+      creditCard: {
+        holderName: payment.creditCard.holderName,
+        number: payment.creditCard.number,
+        expiryMonth: payment.creditCard.expMonth,
+        expiryYear: payment.creditCard.expYear,
+        ccv: payment.creditCard.cvv,
+      },
+      creditCardHolderInfo: {
+        name: solicitation.customer.name,
+        email: solicitation.customer.email,
+        cpfCnpj: solicitation.customer.cpf,
+        postalCode: solicitation.customer.Address.zip_code,
+        addressNumber: solicitation.customer.Address.number,
+        phone: solicitation.customer.phone,
+      },
+      value: solicitation.amount_payment,
+      dueDate: new Date().toISOString(),
+    };
+
+    try {
+      const { data, status } = await this.instance.post('/payments', payload);
 
       return { data, status };
     } catch (error) {

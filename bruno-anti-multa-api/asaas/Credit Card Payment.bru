@@ -1,0 +1,41 @@
+meta {
+  name: Credit Card Payment
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://sandbox.asaas.com/api/v3/payments/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  User-Agent: anti-multas-api
+  access_token: $aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwODQ3NDc6OiRhYWNoXzAxNTRhYjUwLWU3YjEtNDkxNS04MjNlLTE1Mjk5YTQyODg2NQ==
+}
+
+body:json {
+  {
+    
+    "billingType": "CREDIT_CARD",
+    "creditCard": {
+      "holderName": "Rafael Silverio",
+      "number": "4615115475200783",
+      "expiryMonth": "04",
+      "expiryYear": "2029",
+      "ccv": "745"
+    },
+    "creditCardHolderInfo": {
+      "name": "Rafael Silverio",
+      "email": "fael_st@hotmail.com",
+      "cpfCnpj": "41602999031",
+      "postalCode": "12310-054",
+      "addressNumber": "529",
+      "phone": "12981708474"
+    },
+    "value": 199,
+    "dueDate": "2024-11-11"
+  }
+}
