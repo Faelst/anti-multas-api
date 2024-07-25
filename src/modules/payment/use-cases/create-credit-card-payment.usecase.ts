@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { AsaasService } from '../../../common/services/pagarme/pagarme.service';
+import { AsaasService } from '../../../common/services/asaas/asaas.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -31,7 +31,7 @@ export class CreateCreditCardPaymentUseCase {
         throw new Error('Solicitation not found');
       }
 
-      let asaasCustomer = await this.paymentService.listCustomers(
+      let { data: asaasCustomer } = await this.paymentService.listCustomers(
         solicitation.customer.cpf,
       );
 
@@ -49,22 +49,44 @@ export class CreateCreditCardPaymentUseCase {
         solicitation as any,
       );
 
-      if (status === HttpStatus.OK) {
+      if (status === HttpStatus.OK && data.status === 'CONFIRMED') {
         await this.prisma.solicitation.update({
           where: { id: payment.solicitationId },
           data: {
-            status: 'Aguardando Pagamento',
+            status: 'Pagamento Realizado',
           },
         });
 
         this.eventEmitter.emit('document.send-email-to-signer', {
           solicitation: solicitation,
         });
+
+        return data;
       }
 
-      return data;
+      if (status === HttpStatus.OK && data.status === 'PENDING') {
+        await this.prisma.solicitation.update({
+          where: { id: payment.solicitationId },
+          data: {
+            status: 'Pagamento Pendente',
+          },
+        });
+
+        return data;
+      }
+
+      if (!['PENDING', 'CONFIRMED'].includes(data.status)) {
+        await this.prisma.solicitation.update({
+          where: { id: payment.solicitationId },
+          data: {
+            status: 'Pagamento Falhou',
+          },
+        });
+
+        return data;
+      }
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 }

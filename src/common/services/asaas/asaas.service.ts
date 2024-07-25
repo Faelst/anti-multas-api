@@ -42,7 +42,7 @@ export class AsaasService {
 
       return { data, status };
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response);
       throw new Error('Cliente não encontrado');
     }
   }
@@ -58,29 +58,31 @@ export class AsaasService {
       creditCard: {
         holderName: payment.creditCard.holderName,
         number: payment.creditCard.number,
-        expiryMonth: payment.creditCard.expMonth,
-        expiryYear: payment.creditCard.expYear,
-        ccv: payment.creditCard.cvv,
+        expiryMonth: payment.creditCard.expMonth.toString(),
+        expiryYear: payment.creditCard.expYear.toString(),
+        ccv: payment.creditCard.cvv.toString(),
       },
       creditCardHolderInfo: {
         name: solicitation.customer.name,
         email: solicitation.customer.email,
         cpfCnpj: solicitation.customer.cpf,
-        postalCode: solicitation.customer.Address.zip_code,
-        addressNumber: solicitation.customer.Address.number,
+        postalCode: solicitation.customer.Address[0].zip_code,
+        addressNumber: solicitation.customer.Address[0].number,
         phone: solicitation.customer.phone,
       },
-      value: solicitation.amount_payment,
-      dueDate: new Date().toISOString(),
+      value: solicitation.amount_payment / 100,
+      dueDate: new Date().toISOString().split('T')[0],
     };
-
+    console.log(payload);
     try {
       const { data, status } = await this.instance.post('/payments', payload);
 
       return { data, status };
     } catch (error) {
       console.log(error.response.data);
-      throw new Error('Pagamento não autorizado, tenta novamente!');
+      if (error.response.data.errors[0].code === 'invalid_creditCard') {
+        throw new Error(error.response.data.errors[0].description);
+      }
     }
   }
 }
