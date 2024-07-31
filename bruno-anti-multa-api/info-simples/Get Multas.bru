@@ -1,0 +1,17 @@
+meta {
+  name: Get Multas
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://www.infosimples.com/v2/consultas/detran/mg/multas-descritivos?timeout=600&placa=HIG6470&chassi=9533A62R1AR027077
+  body: none
+  auth: none
+}
+
+query {
+  timeout: 600
+  placa: HIG6470
+  chassi: 9533A62R1AR027077
+}

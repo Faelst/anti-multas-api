@@ -5,7 +5,7 @@ import { Address, Customer, Solicitation } from '@prisma/client';
 export class AsaasService {
   constructor(
     private readonly instance = axios.create({
-      baseURL: process.env.AACT_API_URL,
+      baseURL: process.env.ASAAS_API_URL,
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
