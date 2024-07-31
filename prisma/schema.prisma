@@ -63,6 +63,7 @@ model Solicitation {
   customer                Customer                  @relation(fields: [customerId], references: [id])
   customerId              String
   amount_payment          Float
+  indicator               String?
   vehicle_owner           String?
   signer_document_id      String?
   createdAt               DateTime                  @default(now())

@@ -7,7 +7,7 @@ import { CreateSolicitationDto } from '../dto/create-solicitation.dto';
 export class CreateSolicitationUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute({ customerId, infractions }: CreateSolicitationDto) {
+  async execute({ customerId, infractions, indicator }: CreateSolicitationDto) {
     const customer = await this.prisma.customer.findUnique({
       where: { id: customerId },
       include: {
@@ -29,6 +29,7 @@ export class CreateSolicitationUseCase {
         status: SolicitationStatus.PENDING,
         customerId: customer.id,
         amount_payment: paymentAmount * 100,
+        indicator,
       },
     });
 
