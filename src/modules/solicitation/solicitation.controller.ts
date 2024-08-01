@@ -12,7 +12,7 @@ import {
   InflationsDto,
 } from './dto/create-solicitation.dto';
 import { CreateSolicitationUseCase } from './use-cases/create-solicitation.usecase';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { UploadSolicitationDocumentsUseCase } from './use-cases/upload-solicitation-documents.usecase';
 import { UpdateSolicitationUseCase } from './use-cases/update-solicitation.usecase';
 
@@ -30,7 +30,7 @@ export class SolicitationController {
   }
 
   @Post('upload-documents/:solicitationId')
-  @UseInterceptors(FilesInterceptor('documents'))
+  @UseInterceptors(AnyFilesInterceptor())
   uploadFile(
     @UploadedFiles() files: Express.Multer.File[],
     @Param('solicitationId') solicitationId: string,

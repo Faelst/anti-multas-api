@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Inflations" ALTER COLUMN "ait" DROP NOT NULL,
+ALTER COLUMN "orgao" DROP NOT NULL,
+ALTER COLUMN "processamento" DROP NOT NULL;

@@ -56,6 +56,11 @@ model Address {
   updatedAt    DateTime @updatedAt
 }
 
+enum RecurseType {
+  SIMPLE
+  ESPECIAL
+}
+
 model Solicitation {
   id                      String                    @id @default(cuid())
   code                    Int                       @unique @default(autoincrement())
@@ -75,12 +80,22 @@ model Solicitation {
 
 model Inflations {
   id               String       @id @default(cuid())
+  code             String
   description      String
   simple_amount    Float
   especial_amount  Float
   inflation_amount Float
   payment_amount   Float
   type_selected    String
+  recurseType      RecurseType
+  ait              String?
+  vehiclePlate     String?
+  chassis          String?
+  orgao            String?
+  processamento    String?
+  date             String?
+  hour             String?
+  location         String?
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
   solicitation     Solicitation @relation(fields: [solicitationId], references: [id])
@@ -121,6 +136,13 @@ model SolicitationTransaction {
   updatedAt      DateTime     @updatedAt
 }
 
+enum DocumentType {
+  NOTIFICATION
+  CNH
+  RG
+  CRLV
+}
+
 model SolicitationDocument {
   id             String       @id @default(cuid())
   solicitation   Solicitation @relation(fields: [solicitationId], references: [id])
@@ -131,6 +153,7 @@ model SolicitationDocument {
   mimetype       String
   size           Int
   buffer         Bytes
+  type           DocumentType
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }

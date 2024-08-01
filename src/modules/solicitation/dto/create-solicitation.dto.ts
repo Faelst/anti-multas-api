@@ -45,6 +45,21 @@ export class InflationsDto {
 
   @IsOptional()
   vehicleOwner?: string;
+
+  @IsOptional()
+  recurseType: string;
+
+  @IsOptional()
+  ait: string;
+
+  @IsOptional()
+  orgao: string;
+
+  @IsOptional()
+  processamento: string;
+
+  @IsOptional()
+  location: string;
 }
 
 export class CreateSolicitationDto {

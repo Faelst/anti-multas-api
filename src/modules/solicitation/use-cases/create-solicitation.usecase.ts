@@ -34,6 +34,7 @@ export class CreateSolicitationUseCase {
     });
 
     const inflationsData = infractions.map((infraction) => ({
+      code: infraction.code,
       especial_amount: infraction.especialAmount * 100,
       simple_amount: infraction.simpleAmount * 100,
       inflation_amount: infraction.inflationAmount * 100,
@@ -41,10 +42,20 @@ export class CreateSolicitationUseCase {
       type_selected: infraction.type,
       description: infraction.description,
       solicitationId: solicitation.id,
+      vehiclePlate: infraction.vehiclePlate,
+      chassis: infraction.chassis,
+      date: infraction.date,
+      hour: infraction.hour,
+      location: infraction.location,
+      ait: infraction.ait,
+      orgao: infraction.orgao,
+      processamento: infraction.processamento,
+      recurseType:
+        infraction.recurseType === 'recursoSimples' ? 'SIMPLE' : 'ESPECIAL',
     }));
 
     await this.prisma.inflations.createMany({
-      data: inflationsData,
+      data: inflationsData as any,
     });
 
     const inflationsCreated = await this.prisma.inflations.findMany({

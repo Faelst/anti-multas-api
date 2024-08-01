@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
+enum DocumentType {
+  documentNotification = 'NOTIFICATION',
+  documentCNH = 'CNH',
+  documentCRLV = 'CRLV',
+}
+
 @Injectable()
 export class UploadSolicitationDocumentsUseCase {
   constructor(private readonly prisma: PrismaService) {}
@@ -34,6 +40,7 @@ export class UploadSolicitationDocumentsUseCase {
           mimetype: file.mimetype,
           fileName: file.originalname.replace(/\.[^/.]+$/, ''),
           size: file.size,
+          type: DocumentType[file.fieldname],
         },
       });
 
