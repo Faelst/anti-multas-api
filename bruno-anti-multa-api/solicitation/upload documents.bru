@@ -5,7 +5,11 @@ meta {
 }
 
 post {
-  url: {{base_url}}/solicitation
-  body: none
+  url: {{base_url}}/solicitation/upload-documents/clza96x660002qot4qehkakt6
+  body: multipartForm
   auth: none
+}
+
+body:multipart-form {
+  documents: @file(/home/fael-st/Documents/1.png|/home/fael-st/Documents/Rafael-Silverio-ptBr.pdf)
 }

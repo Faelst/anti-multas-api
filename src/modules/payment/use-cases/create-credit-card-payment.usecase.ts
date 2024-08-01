@@ -41,13 +41,20 @@ export class CreateCreditCardPaymentUseCase {
         );
       }
 
-      const { data, status } = await this.paymentService.createOrder(
-        asaasCustomer.data.length
-          ? asaasCustomer.data[0].id
-          : asaasCustomer.data.id,
-        payment,
-        solicitation as any,
-      );
+      // const { data, status } = await this.paymentService.createOrder(
+      //   asaasCustomer.data.length
+      //     ? asaasCustomer.data[0].id
+      //     : asaasCustomer.data.id,
+      //   payment,
+      //   solicitation as any,
+      // );
+
+      const { data, status } = {
+        data: {
+          status: 'CONFIRMED',
+        },
+        status: HttpStatus.OK,
+      };
 
       if (status === HttpStatus.OK && data.status === 'CONFIRMED') {
         await this.prisma.solicitation.update({
@@ -58,8 +65,10 @@ export class CreateCreditCardPaymentUseCase {
         });
 
         this.eventEmitter.emit('document.send-email-to-signer', {
-          solicitation: solicitation,
+          solicitation,
         });
+
+        this.eventEmitter.emit('integration.send-to-ajus', { solicitation });
 
         return data;
       }

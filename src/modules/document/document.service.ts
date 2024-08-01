@@ -2,8 +2,9 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { D4SignService } from '../../common/services/d4sign/d4sing.service';
-import { Customer, Solicitation } from '@prisma/client';
+import { Address, Customer, Inflations, Solicitation } from '@prisma/client';
 import { SendDocumentToLegalUseCase } from './use-cases/send-legal-document.usecase';
+import { SendToAjusUseCase } from './use-cases/send-to-ajus.usecase';
 
 @Injectable()
 export class DocumentEventReceiverService {
@@ -11,7 +12,16 @@ export class DocumentEventReceiverService {
     private readonly prisma: PrismaService,
     private readonly d4SignService: D4SignService,
     private readonly sendDocumentToLegalUseCase: SendDocumentToLegalUseCase,
+    private readonly sendToAjusUseCase: SendToAjusUseCase,
   ) {}
+
+  @OnEvent('integration.send-to-ajus')
+  async handleSendToAjus(payload: {
+    solicitation: Solicitation & { customer: Customer & { address: Address } };
+    inflations: Inflations[];
+  }) {
+    await this.sendToAjusUseCase.execute(payload.solicitation.id);
+  }
 
   @OnEvent('document.signed')
   async handleDocumentSigned(solicitationId: string) {

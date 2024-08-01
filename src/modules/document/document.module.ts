@@ -5,6 +5,7 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 import { DocumentController } from './document.controller';
 import { UpdateDocumentStatusUseCase } from './use-cases/update-document-status.usecase';
 import { SendDocumentToLegalUseCase } from './use-cases/send-legal-document.usecase';
+import { SendToAjusUseCase } from './use-cases/send-to-ajus.usecase';
 
 @Module({
   imports: [],
@@ -15,6 +16,7 @@ import { SendDocumentToLegalUseCase } from './use-cases/send-legal-document.usec
     PrismaService,
     UpdateDocumentStatusUseCase,
     SendDocumentToLegalUseCase,
+    SendToAjusUseCase,
   ],
 })
 export class DocumentModule {}

@@ -1,17 +1,13 @@
 meta {
-  name: Listar clientes
+  name: Todos Listar clientes
   type: http
-  seq: 3
+  seq: 4
 }
 
 get {
-  url: https://sandbox.asaas.com/api/v3/customers?cpfCnpj=46300000071
+  url: https://sandbox.asaas.com/api/v3/customers
   body: none
   auth: none
-}
-
-query {
-  cpfCnpj: 46300000071
 }
 
 headers {
