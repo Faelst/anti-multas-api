@@ -26,7 +26,8 @@
     "migration:reset": "prisma migrate reset --force",
     "migration:status": "prisma migrate status",
     "studio": "prisma studio",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "deploy-heroku": "git push -f heroku master:master"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^9.0.5",
